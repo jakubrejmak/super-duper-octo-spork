@@ -1,0 +1,23 @@
+# Build output
+bin/
+obj/
+
+# Logs
+*.log
+
+# Test results
+TestResults/
+
+# NuGet packages
+*.nupkg
+*.snupkg
+
+# OS files
+.DS_Store
+
+# Environment
+.env
+.env.*
+
+# ASP.NET Core
+appsettings.Development.json
