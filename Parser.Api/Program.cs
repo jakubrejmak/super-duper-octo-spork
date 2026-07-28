@@ -18,10 +18,12 @@ builder.Services.Configure<RouteHandlerOptions>(options =>
     options.ThrowOnBadRequest = false;
 });
 
+// parser services
 builder.Services.AddParserServices();
 
-
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 var api = app.MapGroup("/api");
 var v1 = api.MapGroup("/v1").WithTags("v1");

@@ -1,5 +1,6 @@
 namespace Parser.Api.Extensions;
 
+using Parser.Api.Middleware;
 using Parser.Api.Parsing;
 using Parser.Api.Services;
 
@@ -10,6 +11,8 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ParserService>();
         services.AddSingleton<IContentParser, SepCSVParser>();
         services.AddSingleton<IContentParser, JSONParser>();
+        services.AddExceptionHandler<ParseExceptionHandler>();
+        services.AddProblemDetails();
 
         return services;
     }

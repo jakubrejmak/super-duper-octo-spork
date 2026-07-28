@@ -10,23 +10,29 @@ public class JSONParser : IContentParser
 
     public ParseResult ParseToDictList(Stream stream)
     {
-        using var document = JsonDocument.Parse(stream);
-
-        var root = document.RootElement;
-
-        if (root.ValueKind != JsonValueKind.Array)
+        try
         {
-            throw new ParseException($"Object must be a JSON Array. Got {root.ValueKind}");
+            using var document = JsonDocument.Parse(stream);
+            var root = document.RootElement;
+
+            if (root.ValueKind != JsonValueKind.Array)
+            {
+                throw new ParseException($"Object must be a JSON Array. Got {root.ValueKind}");
+            }
+
+            var list = new List<IReadOnlyDictionary<string, object?>>();
+
+            foreach (var jsonObject in root.EnumerateArray())
+            {
+                list.Add(ToDictionary(jsonObject));
+            }
+
+            return new ParseResult(root.GetArrayLength(), list);
         }
-
-        var list = new List<IReadOnlyDictionary<string, object?>>();
-
-        foreach (var jsonObject in root.EnumerateArray())
+        catch (JsonException e)
         {
-            list.Add(ToDictionary(jsonObject));
+            throw new ParseException($"Invalid JSON format: {e.Message}", e);
         }
-
-        return new ParseResult(root.GetArrayLength(), list);
     }
 
     private object? ConvertValue(JsonElement element)

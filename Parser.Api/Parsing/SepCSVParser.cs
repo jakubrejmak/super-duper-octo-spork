@@ -1,8 +1,8 @@
 namespace Parser.Api.Parsing;
 
+using nietras.SeparatedValues;
 using Parser.Api.Exceptions;
 using Parser.Api.Models;
-using nietras.SeparatedValues;
 
 public class SepCSVParser : IContentParser
 {
@@ -14,17 +14,25 @@ public class SepCSVParser : IContentParser
 
         if (!reader.HasHeader)
         {
-            throw new ParseException("CSV has to have a header");
+            throw new ParseException("No header row found");
         }
         var header = reader.Header;
 
         List<IReadOnlyDictionary<string, object?>> list = new();
 
         int count = 0;
-        foreach (var row in reader)
+
+        try
         {
-            list.Add(ToDictionary(row, header));
-            count++;
+            foreach (var row in reader)
+            {
+                list.Add(ToDictionary(row, header));
+                count++;
+            }
+        }
+        catch (InvalidDataException e)
+        {
+            throw new ParseException($"Invalid CSV format: {e.Message}", e);
         }
 
         return new ParseResult(count, list);

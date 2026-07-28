@@ -16,7 +16,7 @@ public static class ParserEndpoints
 
                 var result = parser.Parse(payload.Type!.Value, stream);
 
-                return new ParseResponse("success", result.Count, result.Objects);
+                return new ParseResponse(result.Count, result.Objects);
             }
         );
 
