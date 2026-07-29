@@ -4,30 +4,30 @@ using Parser.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// services config
 builder.Services.AddValidation();
-
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
     options.SerializerOptions.Converters.Add(
         new JsonStringEnumConverter(allowIntegerValues: false)
     );
 });
-
 builder.Services.Configure<RouteHandlerOptions>(options =>
 {
     options.ThrowOnBadRequest = false;
 });
+builder.Services.AddProblemDetails();
 
-// parser services
+// parser services config
 builder.Services.AddParserServices();
 
 var app = builder.Build();
 
 app.UseExceptionHandler();
 
+// routes
 var api = app.MapGroup("/api");
 var v1 = api.MapGroup("/v1").WithTags("v1");
-
 v1.MapParserEndpoints();
 
 app.Run();

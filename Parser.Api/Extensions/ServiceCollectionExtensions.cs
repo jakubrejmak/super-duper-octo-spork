@@ -12,7 +12,6 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IContentParser, SepCSVParser>();
         services.AddSingleton<IContentParser, JSONParser>();
         services.AddExceptionHandler<ParseExceptionHandler>();
-        services.AddProblemDetails();
 
         return services;
     }
