@@ -2,12 +2,13 @@
 
 ## Wymagania
 
-.NET Runtime 10.0
+- .NET Runtime 10.0
+- Sep 0.15.1
 
 ## Uruchomienie
 
 W folderze projektu (z plikiem .slnx) uruchom polecenie:
-`dotnet run`
+`dotnet run --project Parser.Api`
 
 ## Specyfikacja API
 
